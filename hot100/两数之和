@@ -20,5 +20,11 @@ class Solution:
         # 如果没有答案（按题目假设不会发生），返回空列表
         return []
 
-2.时间复杂度(n^2)--暴力遍历
+2.时间复杂度(n^2)--暴力遍历(切片处理)
 ```python
+class Solution(object):
+    def twoSum(self,nums,target):
+        for i in range(len(nums)):
+            res=target-nums[i]
+            if res in nums[i+1:]:
+                return[i,nums[i+1:].index(res)+i+1]
