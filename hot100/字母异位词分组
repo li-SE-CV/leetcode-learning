@@ -16,3 +16,16 @@ class Solution:
             # 需要将 list 转换成 tuple 才能进行哈希
             mp[tuple(counts)].append(st)
         return list(mp.values())
+
+2.排序（比上面的方法快捷）
+>sorted 排字母，join 拼字符串，
+>排序结果当 key，异位词自然合
+class Solution:
+    def groupAnagrams(self, strs):
+        mp = collections.defaultdict(list)
+
+        for st in strs:
+            key = "".join(sorted(st))#确实比上面的代码要简单的多
+            mp[key].append(st)
+        
+        return list(mp.values())
