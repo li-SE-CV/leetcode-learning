@@ -12,7 +12,7 @@ class Solution(object):
                 return max_s
             #计算水量
             temp = (r-l)*min(height[l],height[r])
-            #更新最大水量
+            #更新最大水量(通过这一步我算是明白了算法里面每行代码的不同，运行的时长千差万别，我本来写的是 max_s=max(max_s,temp)但是产出的时间远不如下面的代码)
             if temp>max_s:
                 max_s=temp
             #总是移动最矮的柱子
