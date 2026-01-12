@@ -1,0 +1,19 @@
+很经典的题目，在数据结构以及算法课上学到过
+1.哈希表（O（n））
+class Solution:
+    def longestConsecutive(self, nums):
+        longest_streak = 0#结果长度
+        num_set = set(nums)#用来去重，集合
+
+        for num in num_set:
+            if num - 1 not in num_set:#筛选起点，只有是「起点」，才进下面代码
+                current_num = num
+                current_streak = 1
+
+                while current_num + 1 in num_set:#往后一直找
+                    current_num += 1
+                    current_streak += 1
+
+                longest_streak = max(longest_streak, current_streak#每次记录最长的一次
+
+        return longest_streak
