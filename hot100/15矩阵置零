@@ -1,0 +1,13 @@
+好像有点像以空间换时间
+先记下来哪些“行”和“列”本来就有 0，
+然后把这些行或列上的所有元素都改成 0。
+
+class Solution:
+    def setZeroes(self, matrix):
+        row_has_zero = [0 in row for row in matrix]  # 行是否包含 0
+        col_has_zero = [0 in col for col in zip(*matrix)]  # 列是否包含 0
+
+        for i, row0 in enumerate(row_has_zero):
+            for j, col0 in enumerate(col_has_zero):
+                if row0 or col0:  # i 行或 j 列有 0
+                    matrix[i][j] = 0  # 题目要求原地修改，无返回值
