@@ -1,0 +1,18 @@
+之前DS课上就有相关的算法，用代码实现真的好难，这个思想其实和上面的08差不多，但是很难想出来是这样的
+
+
+class Solution:
+    def findAnagrams(self, s, p):
+        cnt = Counter(p)  # 统计 p 的每种字母的出现次数
+        ans = []
+
+        left = 0
+        for right, c in enumerate(s):
+            cnt[c] -= 1  # 右端点字母进入窗口
+            while cnt[c] < 0:  # 字母 c 太多了
+                cnt[s[left]] += 1  # 左端点字母离开窗口
+                left += 1
+            if right - left + 1 == len(p):  # s' 和 p 的每种字母的出现次数都相同（证明见上）
+                ans.append(left)  # s' 左端点下标加入答案
+
+        return ans
