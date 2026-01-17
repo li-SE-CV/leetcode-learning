@@ -1,0 +1,19 @@
+核心思想：如果两个前缀和之差等于 k，那么它们中间的子数组和就是 k
+我是看了题解写的代码，很抽象的逻辑，建议用GPT给出例子步骤
+
+class Solution:
+    def subarraySum(self, nums, k):
+        cnt = defaultdict(int)
+        ans = s = 0
+        #直接拿数值
+        for x in nums:
+            cnt[s] += 1
+            s += x
+            ans += cnt[s - k]
+        return ans
+########################################
+nums:      1   1   1
+prefix s:  1   2   3
+找 s[j] - s[i] = 2
+等价于：找 s[i] = s[j] - 2
+和接雨水一样抽象，好难
