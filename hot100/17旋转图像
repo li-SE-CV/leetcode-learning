@@ -1,0 +1,15 @@
+这道题比上一道题简单多了，也很容易想出解决方案
+刚开始很像转置，但是相对于转置多了行翻转
+
+代码为：
+class Solution:
+    def rotate(self, matrix):
+        n = len(matrix)
+        # 第一步：转置
+        for i in range(n):
+            for j in range(i):  # 遍历对角线下方元素
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+        # 第二步：行翻转
+        for row in matrix:
+            row.reverse()
