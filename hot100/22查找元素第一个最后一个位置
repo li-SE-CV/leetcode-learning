@@ -1,0 +1,23 @@
+实现思路：
+有一个非递减顺序排列的特征，用二分查找实现 lower_bound，先找到第一个 ≥ target 的位置
+再找到第一个 ≥ target+1 的位置，从而确定 target 的左右边界
+
+代码为：
+class Solution:
+    def lower_bound(self, nums: List[int], target: int) -> int:
+        left, right = -1, len(nums)  # 覆盖全范围
+        while left + 1 < right:  
+            mid = (left + right) // 2
+            if nums[mid] >= target:
+                right = mid  # 范围缩小到 (left, mid)
+            else:
+                left = mid  # 范围缩小到 (mid, right)
+        return right
+
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        start = self.lower_bound(nums, target)
+        if start == len(nums) or nums[start] != target:
+            return [-1, -1]  # nums 中没有 target
+        # 如果 start 存在，那么 end 必定存在
+        end = self.lower_bound(nums, target + 1) - 1
+        return [start, end]
