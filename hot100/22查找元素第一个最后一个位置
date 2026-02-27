@@ -2,6 +2,13 @@
 有一个非递减顺序排列的特征，用二分查找实现 lower_bound，先找到第一个 ≥ target 的位置
 再找到第一个 ≥ target+1 的位置，从而确定 target 的左右边界
 
+简单来说：
+通过：
+lower_bound(target)
+lower_bound(target+1)
+确定 target 的左右边界
+
+
 代码为：
 class Solution:
     def lower_bound(self, nums: List[int], target: int) -> int:
