@@ -5,7 +5,7 @@
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         m, n = len(matrix), len(matrix[0])  //m是行数，n是列数
-        left, right = -1, m * n
+        left, right = -1, m * n  //设置初始值完全覆盖矩阵范围
         while left + 1 < right:
             mid = (left + right) // 2
             x = matrix[mid // n][mid % n]  //关键：一维索引转化为二维坐标转换            
