@@ -1,0 +1,18 @@
+已经一个多月没更了，最近就算不想看手机也不想学习，摆了一个月，打算挑战两天时间把算法过两边
+这个题目相对于其它比较好解决，就是简单的把二维变成一维用二分查找
+
+代码：
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        m, n = len(matrix), len(matrix[0])  //m是行数，n是列数
+        left, right = -1, m * n
+        while left + 1 < right:
+            mid = (left + right) // 2
+            x = matrix[mid // n][mid % n]  //关键：一维索引转化为二维坐标转换            
+            if x == target:
+                return True
+            if x < target:
+                left = mid
+            else:
+                right = mid
+        return False
