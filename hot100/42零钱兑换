@@ -1,0 +1,20 @@
+这个也很有意思的题目
+用动态规划计算每个金额的最少硬币数量
+通过不断尝试使用不同硬币更新 dp 数组，最终得到 amount 的最优解
+
+金额:  0 1 2 3 4 5 6 7 8 9 10 11
+dp:   0 1 1 2 2 1 2 2 3 3 2  3
+每个格子都是由-左边格子+coin
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+    
+    ##dp[i] = 组成金额 i 所需的最少硬币数量,初始化为 amount+1，表示“不可能的大值”
+    ##eg:  amount = 5    dp = [0, 6, 6, 6, 6, 6]
+        dp = [amount+1]*(amount+1)
+        dp[0] = 0
+        for i in range(amount+1):
+            for coin in coins:
+                if i>=coin:
+                    dp[i] = min(dp[i], dp[i-coin]+1)
+        return dp[amount] if dp[amount]<=amount else -1
