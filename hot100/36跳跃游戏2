@@ -1,0 +1,29 @@
+没看明白这个题目是啥意思
+遍历数组，动态维护当前跳跃能覆盖的最远位置
+当到达当前覆盖的最右端时，进行一次跳跃，并更新覆盖范围，最终得到最少跳跃次数
+
+核心思想：
+贪心策略：每次选择能到达的最远位置
+阶段性覆盖：把每一次跳跃看成一座桥，覆盖当前能到达的最大范围
+必须跳跃时更新：当遍历到当前桥的最右端时，跳跃一次
+
+辅助理解：
+位置:   0   1   2   3   4
+nums:   2   3   1   1   4
+
+第一次桥: 0 → 2 (覆盖0~2)
+第二次桥: 2 → 4 (覆盖2~4)
+到达终点
+
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        ans = 0
+        cur_right = 0  # 已建造的桥的右端点
+        next_right = 0  # 下一座桥的右端点的最大值
+        for i in range(len(nums) - 1):
+            # 遍历的过程中，记录下一座桥的最远点
+            next_right = max(next_right, i + nums[i])
+            if i == cur_right:  # 无路可走，必须建桥
+                cur_right = next_right  # 建桥后，最远可以到达 next_right
+                ans += 1
+        return ans
