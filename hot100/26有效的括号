@@ -1,0 +1,17 @@
+使用栈来匹配括号。
+遍历字符串，遇到左括号入栈，遇到右括号时检查栈是否为空或栈顶元素是否匹配。如果不匹配返回 False
+遍历结束后如果栈为空说明全部匹配成功，否则返回 False。时间复杂度 O(n)，空间复杂度 O(n)
+
+代码：
+class Solution:
+    def isValid(self, s: str) -> bool:
+        if len(s) % 2:  
+            return False
+        mp = {')': '(', ']': '[', '}': '{'}
+        st = []
+        for c in s:
+            if c not in mp:  # c 是左括号
+                st.append(c)  # 入栈
+            elif not st or st.pop() != mp[c]:  # c 是右括号
+                return False  # 没有左括号，或者左括号类型不对
+        return not st  # 所有左括号必须匹配完毕
