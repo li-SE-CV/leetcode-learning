@@ -1,0 +1,21 @@
+对于零算法实操基础的我来说,hot100好难，我还能找到实习吗，哎
+我看到有使用辅助线的：
+通过在栈中存储 (元素值, 当前最小值)，每次入栈时计算并保存当前最小值作为辅助信息，
+从而使 getMin 操作可以在 O(1) 时间内完成。这种方法利用辅助线避免了重复遍历
+
+class MinStack:
+    def __init__(self):
+        # 这里的 0 写成任意数都可以，反正用不到
+        self.st = [(0, inf)]  # 栈底哨兵
+
+    def push(self, val: int) -> None:
+        self.st.append((val, min(self.st[-1][1], val)))
+
+    def pop(self) -> None:
+        self.st.pop()
+
+    def top(self) -> int:
+        return self.st[-1][0]
+
+    def getMin(self) -> int:
+        return self.st[-1][1]
