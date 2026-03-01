@@ -1,0 +1,13 @@
+看题目有意思，叽里咕噜说什么直接给我递归
+
+核心逻辑：
+遍历每个房子，用两个变量滚动保存“上一个房子最大收益”和“上上个房子最大收益”
+每次计算当前最大收益，最终得到最多可抢金额
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        f0, f1 = 0, 0
+        for i, num in enumerate(nums):
+            f0, f1 = f1, max(f1, f0 + num)
+        return f1
