@@ -10,6 +10,7 @@
 代码为：
 class Solution:
     def decodeString(self, s: str) -> str:
+##字符串为空
         if not s:
             return s
 
