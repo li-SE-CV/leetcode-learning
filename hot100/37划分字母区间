@@ -1,0 +1,23 @@
+看题目就感觉好难
+先记录每个字母的最后出现位置
+遍历字符串，更新段的最右边界
+当到达最右边界时 → 当前段结束
+返回每个段的长度
+
+一句话总结：
+把每个字母最后出现位置算出来，遍历时不断扩展当前段最右边界，碰到边界就切段
+
+class Solution:
+    def partitionLabels(self, s: str) -> List[int]:
+        maps = {}
+        for i in range(len(s)):
+            maps[s[i]] = i
+        dis = 0
+        res = []
+        left = 0
+        for i in range(len(s)):
+            dis = max(dis, maps[s[i]])
+            if dis == i:
+                res.append(i-left+1)
+                left = i+1
+        return res
