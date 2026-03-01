@@ -1,0 +1,22 @@
+核心思想是：哈希表统计频率 + 桶排序（Bucket Sort）
+1. 统计每个元素出现次数
+2. 按频率放入对应桶中
+3. 从高频桶往低频桶取元素，直到取够 k 个
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        ##统计频率
+        cnt=Counter(nums)
+        #找到最大频率
+        max_cnt=max(cnt.values())
+
+        #创建桶
+        buckets=[[] for _ in range(max_cnt+1)]
+        #元素放入桶中
+        for i,c in cnt.items():
+            buckets[c].append(i)
+        ans=[]
+        for bucket in reversed(buckets):
+            ans+=bucket
+            if len(ans)==k:
+                return ans
