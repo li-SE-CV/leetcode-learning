@@ -1,0 +1,12 @@
+比较简单的贪心算法题目
+只需要一次遍历数组
+动态维护 历史最低买入价格
+每天计算如果今天卖出利润是多少，更新最大利润
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        cost, profit = float('+inf'), 0
+        for price in prices:
+            cost = min(cost, price)
+            profit = max(profit, price - cost)
+        return profit
