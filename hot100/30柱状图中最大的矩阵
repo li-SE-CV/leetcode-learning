@@ -1,0 +1,21 @@
+感觉和前面有几道题非常相似，都是在柱状图中解决问题
+单调递增栈
+维护--栈中柱子高度递增
+
+当遇到更小柱子时：
+栈顶柱子的右边界确定
+栈顶下一个元素是左边界
+计算面积
+
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        heights.append(-1)  # 最后大火收汁，用 -1 把栈清空
+        st = [-1]  # 在栈中只有一个数的时候，栈顶的「下面那个数」是 -1，对应 left[i] = -1 的情况
+        ans = 0
+        for right, h in enumerate(heights):
+            while len(st) > 1 and heights[st[-1]] >= h:
+                i = st.pop()  # 矩形的高（的下标）
+                left = st[-1]  # 栈顶下面那个数就是 left
+                ans = max(ans, heights[i] * (right - left - 1))
+            st.append(right)
+        return ans
