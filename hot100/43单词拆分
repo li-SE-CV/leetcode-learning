@@ -1,0 +1,26 @@
+看着就难
+
+核心思想：
+用记忆化DFS判断字符串前缀是否可以拆分，每次尝试把最后一段作为单词，如果剩余部分也能拆分则成功
+从字符串末尾向前递归，检查最后一个单词是否合法，并用记忆化避免重复计算，最终判断整个字符串是否可拆分
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+ # 用于限制下面 j 的循环次数
+ #wordDict = ["leet","code"] max_len = 4，就没必要检查长度 >4 的子串
+        max_len = max(map(len, wordDict)) 
+        
+        words = set(wordDict)  # 便于快速判断 s[j:i] in words
+
+        @cache  # 缓存装饰器，避免重复计算 dfs 的结果（记忆化）
+        def dfs(i: int) -> bool:
+            if i == 0:  # 成功拆分！
+                return True
+
+          ##枚举最后一个单词的起点 j
+            for j in range(i - 1, max(i - max_len - 1, -1), -1):
+                if s[j:i] in words and dfs(j):
+                    return True
+            return False
+
+        return dfs(len(s))
