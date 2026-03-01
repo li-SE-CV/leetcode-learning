@@ -1,0 +1,19 @@
+其实我没看懂这道题到底想表达什么
+模型给出的解释我有点明白了，其实简单来说就是当前温度之后相隔多少会出现第一个大于当前温度的数值
+
+使用单调递减栈：
+栈中存还没找到更高温度的下标
+当遇到更高温度时：
+    弹出栈顶
+    计算等待天数
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        n = len(temperatures)
+        ans = [0] * n
+        st = []  # todolist
+        for i, t in enumerate(temperatures):
+            while st and t > temperatures[st[-1]]:
+                j = st.pop()
+                ans[j] = i - j
+            st.append(i)
+        return ans
