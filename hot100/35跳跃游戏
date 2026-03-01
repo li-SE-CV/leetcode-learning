@@ -1,0 +1,28 @@
+这个题目还挺有意思的，挺好玩的，题解给出的1答案真的是妙啊，不用分析最大以内，直接最大步数
+贪心策略：每步尽量维护能到达的最远位置
+可达性检查：如果当前位置不可达，直接跳过
+提前结束：一旦能到达终点，就返回 True
+
+nums = [2,3,1,1,4]
+下标   0 1 2 3 4
+最大跳 2 3 1 1 4
+max_index更新: 0→2→4
+终点=4, 可以到达
+
+一句话总结：遍历数组，维护能跳到的最远位置，如果最远位置大于等于终点，则可达，否则不可达
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        max_index = 0
+
+        for i,step in enumerate(nums):
+##第一步：检查当前位置是否可达
+如果 i > max_index，说明无法到达当前位置 → 直接跳过/结束
+如果 i <= max_index，说明当前位置可达，可以尝试跳到更远的位置
+            if i<=max_index:
+##i+step = 从当前位置跳到的最远下标
+与之前的 max_index 取最大值
+动态维护能到达的最远位置
+                max_index = max(max_index,i+step)
+                if max_index>=len(nums)-1:
+                    return True
+        return False
