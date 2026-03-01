@@ -1,0 +1,15 @@
+通过比较 nums[mid] 和 nums[-1] 判断 mid 位于旋转数组的左半部分还是右半部分
+如果 nums[mid] 小于 nums[-1]，说明 mid 在右半部分，最小值在 mid 或其左侧，因此收缩右边界；否则 mid 在左半部分，最小值在右侧，收缩左边界。
+最终 right 指向最小值位置，返回 nums[right]。时间复杂度为 O(log n)
+
+代码为：
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        left, right = -1, len(nums) - 1  
+        while left + 1 < right:  # 开区间不为空
+            mid = (left + right) // 2
+            if nums[mid] < nums[-1]:
+                right = mid
+            else:
+                left = mid
+        return nums[right]
