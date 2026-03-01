@@ -1,0 +1,37 @@
+没看懂意思，后面又看了一遍
+核心思想是：用两个堆（最大堆 + 最小堆）动态维护中位数
+使用两个堆：
+left  → 最大堆（存较小的一半）
+right → 最小堆（存较大的一半）
+
+结构图：
+较小的一半      较大的一半
+[ max heap ]   [ min heap ]
+
+     5   |   8
+   3  4   |   9 10
+
+保证：left 中所有元素 ≤ right 中所有元素
+并且：
+len(left) == len(right)
+或
+len(left) == len(right) + 1
+
+这样：
+中位数就在堆顶或两个堆顶平均值
+class MedianFinder:
+    def __init__(self):
+        self.left = []  # 最大堆
+        self.right = []  # 最小堆
+
+    def addNum(self, num: int) -> None:
+        if len(self.left) == len(self.right):
+            heappush_max(self.left, heappushpop(self.right, num))
+        else:
+            heappush(self.right, heappushpop_max(self.left, num))
+
+    def findMedian(self) -> float:
+        if len(self.left) > len(self.right):
+            return self.left[0]
+        return (self.left[0] + self.right[0]) / 2
+
