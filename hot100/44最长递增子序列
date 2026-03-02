@@ -1,0 +1,15 @@
+题目很好理解，感觉转成算法题好难
+接着用递归吧，我看有人还用贪心+二分查找（时间上会有很大的提升）
+
+核心想法：f[i] = 以 nums[i] 为结尾的最长递增子序列长度，通过遍历所有 j<i 且 nums[j]<nums[i] 来更新
+
+
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        f = [0] * len(nums)
+        for i, x in enumerate(nums):
+            for j, y in enumerate(nums[:i]):
+                if x > y:
+                    f[i] = max(f[i], f[j])
+            f[i] += 1
+        return max(f)
