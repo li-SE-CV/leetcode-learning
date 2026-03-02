@@ -1,0 +1,17 @@
+很经典的题目,在很多地方见过（有点类似爬楼梯？）
+特点是：只能向右和向下移动一步
+1. 定义 f[j] 表示当前行第 j 列路径数
+2. 初始化：
+   f[1] = 1
+3. 遍历每一行：
+   f[j+1] += f[j]
+4. 返回 f[n]
+
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        f = [0] * (n + 1)
+        f[1] = 1
+        for _ in range(m):
+            for j in range(n):
+                f[j + 1] += f[j]  ##当前格 = 上方 + 左方
+        return f[n]
