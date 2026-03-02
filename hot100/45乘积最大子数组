@@ -1,0 +1,21 @@
+跟前面一样，题目简单但是逻辑不好想出来，还有就是为啥我一做算法题就想暴力遍历，哎
+核心状态转移：最大乘积来自三种情况
+1. 之前最大 × 当前数
+2. 之前最小 × 当前数
+3. 当前数自己（重新开始）
+f_max = max(
+    x,
+    f_max × x,
+    f_min × x
+)
+
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        ans = -inf  # 注意答案可能是负数
+        f_max = f_min = 1
+        for x in nums:
+            f_max, f_min = max(f_max * x, f_min * x, x), min(f_max * x, f_min * x, x)
+            ans = max(ans, f_max)
+        return ans
+
+
