@@ -1,0 +1,21 @@
+和前面两个坐一桌吧，都是对于序列数组的变形
+写了这么多动态优化，常见的解决方案有递归（大部分上都能用），dfs，背包问题
+逻辑图（本质上是二叉决策树）：
+            dfs(i,j)
+           /       \
+     选 nums[i]   不选 nums[i]
+       dfs(i-1, j-x)   dfs(i-1, j)
+用 DFS + 记忆化，
+判断是否能从 nums 中选一些数，
+使它们的和等于 sum(nums)//2
+
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        @cache  # 缓存装饰器，避免重复计算 dfs 的结果（记忆化）
+        def dfs(i: int, j: int) -> bool:
+            if i < 0:
+                return j == 0
+            return j >= nums[i] and dfs(i - 1, j - nums[i]) or dfs(i - 1, j)
+
+        s = sum(nums)
+        return s % 2 == 0 and dfs(len(nums) - 1, s // 2)
