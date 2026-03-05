@@ -1,0 +1,27 @@
+这两天导一直安排活儿，感觉找工作更有动力了（bushi
+自从进组之后就是干活，让我思考了我为什么本科不去工作，来当耗材
+
+代码逻辑：
+遍历字符串，每次尝试扩展当前已找到的最长回文串长度，看能否得到更长的回文（DS课程讲过很经典）
+当遍历到第 i 个字符时：只尝试构造可能变成更长回文的子串。因为：如果当前最长回文长度是L
+那么新的最长回文只可能是：
+L + 1
+或
+L + 2
+原因：回文长度增加 1 → 奇数回文，回文长度增加 2 → 偶数回文
+
+所以我们只需要检查这两种情况。
+class Solution(object):
+    def longestPalindrome(self, s):
+        res = ''
+        for i in range(len(s)):
+            start = max(i - len(res) -1, 0)
+            temp = s[start: i+1]
+            if temp == temp[::-1]:
+                res = temp
+            else:
+                temp = temp[1:]
+                if temp == temp[::-1]:
+                    res = temp
+        return res
+
