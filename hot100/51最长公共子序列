@@ -1,1 +1,33 @@
+这道题力扣判断的很慢
+看到题目是不要求是连续的大阪市顺序是一致的，看起来比前面的回文子串简单多了
+重点是二维DP换成一维数组有点难理解
 
+核心逻辑：遍历 text1 和 text2，通过动态规划判断字符是否相同来更新最长公共子序列长度
+并利用一维数组压缩空间，同时用 pre 保存左上角状态
+
+整体流程：
+遍历 text1
+    遍历 text2
+        如果字符相同
+            dp[j+1] = dp[i-1][j-1] +1
+        如果字符不同
+            dp[j+1] = max(dp[i][j-1], dp[i-1][j])
+| text1字符 | j | text2字符 | 是否相等 | 更新公式                      | dp数组变化  |
+| ------- | - | ------- | ---- | ------------------------- | ------- |
+| a       | 0 | a       | 相等   | dp[1] = pre + 1           | [0,1,0] |
+| a       | 1 | c       | 不等   | dp[2] = max(dp[1], dp[2]) | [0,1,1] |
+| b       | 0 | a       | 不等   | dp[1] = max(dp[0], dp[1]) | [0,1,1] |
+| b       | 1 | c       | 不等   | dp[2] = max(dp[1], dp[2]) | [0,1,1] |
+| c       | 0 | a       | 不等   | dp[1] = max(dp[0], dp[1]) | [0,1,1] |
+| c       | 1 | c       | 相等   | dp[2] = pre + 1           | [0,1,2] |
+
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        dp=[0]*(len(text2)+1)
+        for ch1 in text1:##逐个加入 text1 的字符,不断更新和 text2 的 LCS
+            pre=0
+            for j,ch2 in enumerate(text2):
+                tmp=dp[j+1] # 保存旧的 dp[i-1][j]
+                dp[j+1]= pre+1 if ch1==ch2 else max(dp[j],dp[j+1])
+                pre=tmp  # 更新左上角
+        return dp[-1]
