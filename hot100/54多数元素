@@ -1,0 +1,14 @@
+没看懂啥意思，看了例子也没对上题干，看懂了其实就是出现次数多的元素
+
+摩尔投票算法 就是不断让不同元素“互相抵消”，最终剩下的元素就是出现次数最多（多数元素）的那个
+
+代码（理解起来还挺有意思的）：
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        ans = hp = 0
+        for x in nums:
+            if hp == 0: ### x 是初始擂主，生命值为 1
+                ans, hp = x, 1
+            else: # 比武，同门加血，否则扣血
+                hp += 1 if x == ans else -1
+        return ans
