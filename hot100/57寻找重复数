@@ -1,0 +1,17 @@
+哈希表记录已经出现过的数字，很简单（但是貌似面试不是考察这个而是考察相关快慢指针问题）
+
+遍历数组时：
+如果数字 第一次出现 → 记录到字典
+如果数字 已经出现过 → 说明它是重复数字，直接返回
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        mp=dict()
+        for i in range(len(nums)):
+            if nums[i] in mp:
+                return nums[i]
+            else:
+                 mp[nums[i]]=i
+        return -1
+
+        
