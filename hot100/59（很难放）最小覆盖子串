@@ -1,0 +1,44 @@
+挺难度（比前面的一些动态规划难，这个先放一放）
+双指针+滑动窗口（滑动窗口的题目好难）
+
+1 右指针扩大窗口
+2 更新窗口数据
+3 判断是否满足条件
+4 左指针缩小窗口
+5 更新最优答案
+
+口诀：右扩找满足，左缩找最小
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        need = {}##记录 t 中每个字符需要多少个。
+        for char in t:
+            need[char] = need.get(char, 0) + 1
+        cur = {}##当前窗口里字符的数量
+        left = right = 0
+        vaild = 0
+        min_l = float('inf')
+        
+        ##右扩窗口
+        while right < len(s):
+            char = s[right]
+            right += 1
+            
+            ##更新窗口字符统计（如果这个字符是需要的，就记录）
+            if char in need:
+                cur[char] = cur.get(char, 0) + 1
+
+                ##判断是否满足条件
+                if cur[char] == need[char]:
+                    vaild += 1
+            while vaild == len(need):
+                if right - left < min_l:
+                    start = left
+                    min_l = right -left
+                d = s[left]
+                left += 1
+                if d in need:
+                    if cur[d] == need[d]:
+                        vaild -= 1
+                    cur[d] -= 1
+        return "" if min_l == float('inf') else s[start:start + min_l ]
