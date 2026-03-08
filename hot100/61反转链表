@@ -1,0 +1,25 @@
+经典题目，408DS里面有头插法和尾插法
+
+头插法:
+None    1 → 2 → 3 → 4 → 5
+↑pre    ↑cur
+第一轮循环：
+nxt = cur.next----nxt = 2
+cur.next = pre----1 → None
+pre = cur---------pre = 1
+结束状态
+反转部分: 1 → None
+未处理:  2 → 3 → 4 → 5
+
+
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        pre = None
+        cur = head
+        while cur:
+            nxt = cur.next
+            cur.next = pre  # 把 cur 插在 pre 链表的前面（头插法）
+            pre = cur
+            cur = nxt
+        return pre
+
