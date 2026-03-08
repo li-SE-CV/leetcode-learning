@@ -1,0 +1,16 @@
+回文，子串我真的不喜欢做有关于这两个的题目
+思路：把链表转成数组，然后判断数组是不是回文（妙蛙）
+1️⃣ 遍历链表，把节点值存入数组
+2️⃣ 复制一份数组
+3️⃣ 把原数组反转，然后比较是否相同
+
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        ans = []
+        p = head
+        while p:
+            ans.append(p.val)
+            p = p.next
+        trans = ans.copy()
+        ans.reverse()
+        return trans == ans
