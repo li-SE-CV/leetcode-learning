@@ -1,0 +1,25 @@
+快慢指针
+slow  慢指针（乌龟）
+fast  快指针（兔子）
+slow 每次走 1 步
+fast 每次走 2 步
+情况1：没有环
+链表：1 → 2 → 3 → 4 → 5 → None
+快指针会先到达：None
+循环结束。
+返回：False
+情况2：有环
+如果链表有环：fast一定会追上 slow
+所以：
+fast == slow（有环）
+
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        fast=slow=head
+        while fast and fast.next:
+            fast=fast.next.next
+            slow=slow.next
+            if fast==slow:
+                return True
+        return False
