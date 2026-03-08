@@ -1,0 +1,23 @@
+啥时候能做完hot100啊，这道题跟数学题相关（Floyd 判圈算法）
+思路懂了代码就比较好写
+
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        slow,fast = head,head
+
+        #第一步，判断是否有环
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+            if slow == fast:
+                #第二步：寻找环入口
+                ##ptr 从链表头开始
+                ptr = head
+     
+                while ptr != slow:
+                ##ptr 每次走1步，slow 每次走1步
+                    ptr = ptr.next
+                    slow = slow.next
+                return ptr
+        return None
