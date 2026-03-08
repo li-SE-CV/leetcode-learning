@@ -1,0 +1,11 @@
+递归：每次选两个链表中较小的节点作为当前节点，然后递归合并剩下的部分
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        if list1 is None: return list2  # 注：如果都为空则返回空
+        if list2 is None: return list1
+        if list1.val < list2.val:
+            list1.next = self.mergeTwoLists(list1.next, list2)(把剩下部分继续合并,把结果接到list1.next)
+            return list1
+        list2.next = self.mergeTwoLists(list1, list2.next)
+        return list2
