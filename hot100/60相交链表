@@ -1,1 +1,19 @@
-经典题目
+简单题目（双指针搞定）
+让两个指针分别走 A+B 和 B+A，通过长度补齐，使它们在交点相遇
+
+为什么一定相遇：
+p走：A → B   路径：1 → 2 → 3 → 8 → 9 → 4 → 5 → 8
+q走：B → A   路径：4 → 5 → 8 → 9 → 1 → 2 → 3 → 8
+注意：两个人都走了（A长度 + B长度），所以一定会对齐交点
+
+让两个指针分别遍历 A+B 和 B+A，这样两个指针走的总长度相同，从而对齐链表长度
+如果有交点就会在交点相遇，否则会在 None 相遇
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        p, q = headA, headB
+        while p is not q:##只要 p 和 q 不是同一个节点 就继续走（p == None 且 q == None就是两者没有交点）
+            p = p.next if p else headB
+            q = q.next if q else headA
+        return p
+
