@@ -1,0 +1,20 @@
+经典题目，我真服了学校能不能放过我，我都快毕业了看得跟高三一样
+
+中序遍历顺序：左子树 → 根节点 → 右子树(递归解决)
+核心思想：
+递归遍历左子树
+访问当前节点
+递归遍历右子树
+
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        def dfs(node: Optional[TreeNode]) -> None:
+            if node is None:
+                return
+            dfs(node.left)       # 左
+            ans.append(node.val) # 根（这行代码移到前面就是前序，移到后面就是后序）
+            dfs(node.right)      # 右
+
+        ans = []
+        dfs(root)
+        return ans
