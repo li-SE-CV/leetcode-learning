@@ -1,0 +1,23 @@
+递归，动态规划和二叉树基本上解决思路就是递归（常见使用dfs算法）
+
+核心思想(自底向上)：一棵树的最大深度 = 左子树最大深度 和 右子树最大深度 的较大值 + 1（当前节点这一层）
+      
+          root
+         /    \
+   maxDepth   maxDepth
+      /           \
+ left subtree   right subtree
+ 
+步骤：
+1. root 为空 -> 返回 0
+2. 递归计算左子树深度
+3. 递归计算右子树深度
+4. 返回 max(左, 右) + 1
+
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if root is None:
+            return 0
+        l_depth = self.maxDepth(root.left)
+        r_depth = self.maxDepth(root.right)
+        return max(l_depth, r_depth) + 1
