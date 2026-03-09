@@ -1,0 +1,25 @@
+核心思路：
+递归翻转左子树
+递归翻转右子树
+交换左右子树
+
+注意：若交换左右儿子只写一行root.left = right就会出现
+      root
+     /    \
+   right  right
+
+原来的左子树丢失了，所以必须再写：
+root.right = left
+恢复另一侧
+
+代码为：
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if root is None:
+            return None
+        left = self.invertTree(root.left)  # 翻转左子树
+        right = self.invertTree(root.right)  # 翻转右子树
+        root.left = right  # 交换左右儿子
+        root.right = left
+        return root
+
