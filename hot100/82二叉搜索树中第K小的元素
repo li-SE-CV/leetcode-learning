@@ -1,1 +1,38 @@
-111
+核心思想：中序遍历 + 计数，因为 BST 的中序遍历结果是升序的
+中序遍历 BST，边遍历边计数 k，找到第 k 小的节点立即返回
+
+BST：
+       5
+      / \
+     3   7
+    / \ / \
+   2  4 6 8
+查找 k=3：
+DFS 左子树 → 2 → k=2
+访问节点 3 → k=1
+访问节点 4 → k=0 → ans=4，递归终止
+结果：ans = 4
+
+
+代码为：
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        ans = 0
+        def dfs(node: Optional[TreeNode]) -> None:
+            nonlocal k, ans
+
+           ##遇到空节点 → 返回
+           ##k <= 0 → 已找到第 k 小元素 → 提前终止
+            if node is None or k <= 0:
+                return
+            ##遍历左子树（左子树节点都比当前节点小，先遍历左子树）
+            dfs(node.left)  # 左
+
+            #处理当前节点（根）
+            k -= 1
+            if k == 0:
+                ans = node.val 
+
+            dfs(node.right)  # 右
+        dfs(root)
+        return ans
