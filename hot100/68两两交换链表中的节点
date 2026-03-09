@@ -1,0 +1,24 @@
+这道题我看别人解答，发现有迭代和递归的做法
+递归思路：交换前两个节点 + 递归处理剩下链表（思路比较清晰）
+swapPairs(head):
+    1. 交换前两个节点
+    2. 剩下的链表递归交换
+    3. 拼接起来
+也就是：2 → 1 → swapPairs(3 → 4)
+
+
+代码为：
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head is None or head.next is None:  # 递归边界
+            return head  # 不足两个节点，无需交换
+
+        node1 = head
+        node2 = head.next
+        node3 = node2.next
+
+        node1.next = self.swapPairs(node3)  # 1 指向递归返回的链表头
+        node2.next = node1  # 2 指向 1
+
+        return node2  # 返回交换后的链表头节点
+
