@@ -1,0 +1,27 @@
+感觉和前面几个题非常的似曾相识
+
+核心思想：用最小堆（优先队列）每次取出当前最小的节点，然后继续推进该节点所在的链表
+把每个链表当前最小的节点放进堆，每次取最小的接到结果链表
+
+实际上就是K路归并
+1 所有链表头节点入堆
+2 取最小节点
+3 把该节点的next入堆
+4 接到结果链表
+5 重复
+
+代码为：
+ListNode.__lt__ = lambda a, b: a.val < b.val  # 让堆可以比较节点大小
+
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        cur = dummy = ListNode()  # 哨兵节点，作为合并后链表头节点的前一个节点
+        h = [head for head in lists if head]  # 把所有非空链表的头节点入堆
+        heapify(h)  # 堆化
+        while h:  # 循环直到堆为空
+            node = heappop(h)  # 剩余节点中的最小节点
+            if node.next:  # 下一个节点不为空
+                heappush(h, node.next)  # 下一个节点有可能是最小节点，入堆
+            cur.next = node  # 把 node 添加到新链表的末尾
+            cur = cur.next  # 准备合并下一个节点
+        return dummy.next  # 哨兵节点的下一个节点就是新链表的头节点
