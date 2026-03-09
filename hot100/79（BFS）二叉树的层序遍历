@@ -1,0 +1,34 @@
+层序遍历=BFS=一层一层从上往下遍历二叉树
+
+核心逻辑：
+用 cur 保存当前层节点
+遍历当前层得到下一层 nxt
+不断更新 cur = nxt
+
+流程：
+root
+  │
+  ▼
+cur = [root]
+while cur:
+    遍历当前层
+    收集下一层
+    cur = nxt
+
+代码为：
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if root is None:
+            return []
+        ans = []
+        cur = [root]
+        while cur:
+            nxt = []
+            vals = []##当前层所有节点值
+            for node in cur:
+                vals.append(node.val)
+                if node.left:  nxt.append(node.left)
+                if node.right: nxt.append(node.right)
+            cur = nxt      ##换循环层
+            ans.append(vals)##每一层循环完相加
+        return ans
