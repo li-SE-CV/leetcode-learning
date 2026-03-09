@@ -1,0 +1,36 @@
+如果这道题是数组那很好做了（找个排序算法就行），如果这个链表可以修改节点值那也还行
+主要是指针用不好很乱
+
+核心思想：把链表转换成数组排序，再写回链表(实际上还是把节点里面的值变换了)
+链表 → 数组 → 排序 → 写回链表
+4 → 2 → 1 → 3
+      ↓
+[4,2,1,3]
+      ↓
+排序
+      ↓
+[1,2,3,4]
+      ↓
+写回链表
+      ↓
+1 → 2 → 3 → 4
+
+class Solution:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        cur = head
+        val_list = []
+        #找到列表中所有节点的值
+        while cur is not None:
+            val_list.append(cur.val)
+            cur = cur.next
+        #对列表中所有节点的值排序
+        val_list = sorted(val_list)
+        
+        index = 0
+        cur = head
+        #对列表中节点重新赋值
+        while cur is not None:
+            cur.val = val_list[index]
+            cur = cur.next
+            index += 1
+        return head
