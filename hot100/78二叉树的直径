@@ -1,0 +1,31 @@
+二叉树直径 = 任意两个节点之间的最长路径长度
+
+核心思想：在计算每个节点高度的同时，尝试更新经过该节点的最长路径
+注意：为什么代码里面长度要+1-dfs(child) 只算 child 往下的边，从 node 到 child 还有一条边，所以要 +1
+DFS遍历每个节点
+      │
+      ▼
+计算左右子树链长
+      │
+      ▼
+更新直径
+      │
+      ▼
+返回当前节点链长
+
+总结来说：1 计算每个节点的高度  2 用左右高度更新直径
+
+代码为：
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        ans = 0
+        def dfs(node: Optional[TreeNode]) -> int:
+            if node is None:
+                return -1  # 对于叶子来说，链长就是 -1+1=0
+            l_len = dfs(node.left) + 1  # 左子树最大链长+1
+            r_len = dfs(node.right) + 1  # 右子树最大链长+1
+            nonlocal ans  ##dfs 函数要修改外层函数 diameterOfBinaryTree 里的变量 ans,所以用nonlocal
+            ans = max(ans, l_len + r_len)  # 两条链拼成路径
+            return max(l_len, r_len)  # 当前子树最大链长
+        dfs(root)
+        return ans
