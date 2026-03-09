@@ -1,0 +1,25 @@
+核心思想：二分递归 + 中序构建，保证 BST 平衡
+
+二叉搜索树要求：
+每个节点左子树 < 节点 < 右子树
+左右子树高度差 ≤ 1
+
+核心思想：用数组中点作为根，左半部分递归生成左子树，右半部分递归生成右子树，保证 BST 高度平衡
+
+注意切片用法：
+在切片中nums[start:end] → 从 start 到 end-1
+nums[m+1:] → 从 m+1 到最后一个元素
+nums[start:end]  → 从索引 start 到 end-1（不包含 end）
+nums[start:]     → 从索引 start 到末尾
+nums[:end]       → 从索引 0 到 end-1
+
+
+代码为：
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        if not nums:
+            return None
+        m = len(nums) // 2
+        left = self.sortedArrayToBST(nums[:m])##范围从0到m-1
+        right = self.sortedArrayToBST(nums[m + 1:])##范围从m+1到end-1
+        return TreeNode(nums[m], left, right)
