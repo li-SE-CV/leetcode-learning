@@ -1,0 +1,26 @@
+还是链表的题看着就明白题干比后面的一些动态规划好多了（可以看出筑波有多讨厌动态规划）
+而且我发现针对链表的问题大多数的解决方案是  双指针
+这道题：双指针（快慢指针）+哨兵节点
+关键点是：
+right 到末尾
+↓
+left 正好在 倒数第 n 个节点前面
+
+核心思路：
+1.先让右指针 right 走 n 步
+2.然后 left 和 right 一起走
+3.当 right 到达链表末尾时 left 正好在 倒数第 n 个节点的前一个节点
+4.删除 left.next
+
+代码：
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        # 由于可能会删除链表头部，用哨兵节点简化代码
+        left = right = dummy = ListNode(next=head)
+        for _ in range(n):
+            right = right.next  # 右指针先向右走 n 步
+        while right.next:
+            left = left.next
+            right = right.next  # 左右指针一起走
+        left.next = left.next.next  # 左指针的下一个节点就是倒数第 n 个节点
+        return dummy.next
