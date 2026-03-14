@@ -1,0 +1,36 @@
+说白了，做二叉树的题不亚于捅了DFS的窝子（基本上都是dfs）
+注意几个关键点：
+1.路径不一定从根开始
+2.路径不一定到叶子结束
+3.路径必须连续
+4.路径不能分叉（往上传递时只能选一条
+
+核心思想：DFS + 后序遍历（自底向上计算）（有点动态规划的感觉）
+返回从当前节点出发向下的一条最大路径和（只能选一条分支）
+
+1️⃣ 计算经过当前节点的最大路径
+node + left + right
+2️⃣ 返回给父节点的最大贡献
+node + max(left,right)
+
+代码为：
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        self.max_sum = -float('inf')
+
+        def dfs(node):
+            if not node:
+                return 0
+
+            #左子树最大路径，右子树最大路径
+            left = max(dfs(node.left),0)
+            right = max(dfs(node.right),0)
+
+            cur_sum = node.val+left+right
+            self.max_sum = max(cur_sum,self.max_sum)
+
+            return node.val + max(left,right)   # 往上只能返回一条路径
+
+        dfs(root)
+
+        return self.max_sum
