@@ -1,0 +1,46 @@
+感觉图论的题目应该很有意思，这个就很有意思（比一些子串，链表，树有意思多了）
+
+核心思路：
+遇到一个陆地 → 用DFS把整块陆地全部标记
+同时岛屿数量 +1
+
+算法流程：
+遍历整个地图
+    如果遇到 '1'
+        说明发现新岛
+        DFS把整座岛淹掉
+        ans += 1
+        
+注意：下面的代码是洪水填充（Flood Fill），即逐渐扩散，直到整座岛被标记
+dfs(i, j - 1)  # 左
+dfs(i, j + 1)  # 右
+dfs(i - 1, j)  # 上
+dfs(i + 1, j)  # 下
+
+
+代码为：
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        m, n = len(grid), len(grid[0])
+
+        def dfs(i: int, j: int) -> None:
+            # 出界，或者不是 '1'，就不再往下递归
+            if i < 0 or i >= m or j < 0 or j >= n or grid[i][j] != '1':
+                return
+            grid[i][j] = '2'  # 插旗！避免来回横跳无限递归
+            dfs(i, j - 1)  # 往左走
+            dfs(i, j + 1)  # 往右走
+            dfs(i - 1, j)  # 往上走
+            dfs(i + 1, j)  # 往下走
+
+        ans = 0
+        for i, row in enumerate(grid):
+            for j, c in enumerate(row):
+                if c == '1':  # 找到了一个新的岛
+                    dfs(i, j)  # 把这个岛插满旗子，这样后面遍历到的 '1' 一定是新的岛
+                    ans += 1
+        return ans
+
+
+
+        
