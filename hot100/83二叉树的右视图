@@ -1,2 +1,30 @@
 很有意思的题目
 
+核心思想：用 DFS 深度优先搜索，并且先遍历右子树。这样每一层第一次访问到的节点就是最右边的节点
+（简单来说就是DFS先遍历右子树，每层第一次访问到的节点就是右视图节点）
+
+代码结构其实只有三步：
+1️⃣ 定义答案数组 ans
+2️⃣ 用 dfs 遍历二叉树
+3️⃣ 每一层第一次访问到的节点加入 ans
+
+| 参数    | 含义       |
+| ----- | -------- |
+| node  | 当前访问的节点  |
+| depth | 当前节点所在层数 |
+
+
+
+代码为；
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        ans = []
+        def dfs(node: Optional[TreeNode], depth: int) -> None:##因为->None这个函数只执行操作，不返回结果
+            if node is None:
+                return
+            if depth == len(ans):  # 这个深度首次遇到
+                ans.append(node.val)
+            dfs(node.right, depth + 1)  # 先递归右子树，保证首次遇到的一定是最右边的节点
+            dfs(node.left, depth + 1)
+        dfs(root, 0)
+        return ans
