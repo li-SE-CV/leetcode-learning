@@ -1,0 +1,29 @@
+展开后的结构要求：
+1.按前序遍历顺序
+2.所有节点只用 right 指针连接
+3.left全部变成 None
+
+核心思想：逆前序遍历 + 链表头插法
+正常前序遍历是：根 → 左 → 右
+但这里使用：右 → 左 → 根
+原因是：这样处理时，当前节点可以直接接到已经构建好的链表前面
+(具体头插法的案例过程可以用gpt演示，一目了然)
+
+注意：在类的方法内部递归调用自己时，必须用 self.flatten()，不能直接写 flatten()
+| 变量          | 含义            | 作用     |
+| ----------- | ------------- | ------ |
+| `root`      | 当前递归处理的树节点    | 遍历二叉树  |
+| `self.head` | 当前已经构建好的链表头节点 | 构造结果链表 |
+
+
+代码为：
+class Solution:
+    head = None
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        if root is None:
+            return
+        self.flatten(root.right)##先递归右子树
+        self.flatten(root.left)##递归左子树
+        root.left = None
+        root.right = self.head  # 头插法，相当于链表的 root.next = head
+        self.head = root  # 现在链表头节点是 root
