@@ -1,0 +1,37 @@
+看着就难，咋二叉树后面这么难，没有链表简单
+
+核心思想：前缀和+哈希表+DFS
+用前缀和记录从根到当前节点的路径和，并统计有多少条子路径等于 targetSum
+当前路径和 - 之前某个前缀和 = targetSum
+
+注意：这个其实我也理解不了，可能结合动画比较容易理解，感觉像是益智题，建议结合gpt给的例子或者看视频理解
+
+
+代码为：
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        # key：从根到 node 的节点值之和
+        # value：节点值之和的出现次数
+        # 注意在递归过程中，哈希表只保存根到 node 的路径的前缀的节点值之和
+        cnt = defaultdict(int)  
+        cnt[0] = 1
+        ans = 0
+        
+        # s 表示从根到 node 的父节点的节点值之和（node 的节点值尚未计入）
+        def dfs(node: Optional[TreeNode], s: int) -> None:
+            if node is None:
+                return
+
+            nonlocal ans
+            s += node.val
+            # 把 node 当作路径的终点，统计有多少个起点
+            ans += cnt[s - targetSum]
+
+            cnt[s] += 1
+            dfs(node.left, s)
+            dfs(node.right, s)
+            cnt[s] -= 1  # 恢复现场（撤销 cnt[s] += 1）
+
+        dfs(root, 0)
+        return ans
+
