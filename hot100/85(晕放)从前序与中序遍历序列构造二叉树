@@ -1,0 +1,36 @@
+很典型的题目，在数据结构课程中考试经常会出的题目
+就是哪两个遍历结合会构造出唯一的二叉树（前序（先序）、中序、后序、层序）
+
+这两个遍历的性质：
+先序遍历：根 → 左 → 右
+中序遍历：左 → 根 → 右
+结论：先序的第一个元素一定是当前子树的根节点，然后用这个根节点在 中序遍历里切分左右子树
+
+主要步骤：
+1️⃣ 先序第一个元素确定 根节点
+2️⃣ 在中序遍历中找到这个根节点的位置
+3️⃣ 左边是 左子树，右边是 右子树
+然后递归构建
+
+| 参数    | 含义               |
+| ----- | ---------------- |
+| pre_l | preorder 当前子树左边界 |
+| pre_r | preorder 当前子树右边界 |
+| in_l  | inorder 当前子树左边界  |
+
+
+代码为：
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        index = {x: i for i, x in enumerate(inorder)} ##找到根节点在 inorder 中的位置
+
+        def dfs(pre_l: int, pre_r: int, in_l: int) -> Optional[TreeNode]:
+            if pre_l == pre_r:  # 空节点
+                return None
+            left_size = index[preorder[pre_l]] - in_l  # 左子树的大小
+            left = dfs(pre_l + 1, pre_l + 1 + left_size, in_l)
+            right = dfs(pre_l + 1 + left_size, pre_r, in_l + 1 + left_size)
+            return TreeNode(preorder[pre_l], left, right)
+
+        return dfs(0, len(preorder), 0)  # 左闭右开区间
+
