@@ -1,0 +1,59 @@
+加油加油，还有三道题
+
+核心思想：DFS + 回溯 + 约束条件剪枝，用 left 和 right 来控制括号合法性
+
+eg：n=2
+dfs(0,0)
+│
+├─ 放 '(' -> dfs(1,0)
+│   │
+│   ├─ 放 '(' -> dfs(2,0)
+│   │   │
+│   │   └─ 放 ')' -> dfs(2,1)
+│   │       │
+│   │       └─ 放 ')' -> dfs(2,2) -> add "(()"
+│   │
+│   └─ 放 ')' -> dfs(1,1)
+│       │
+│       └─ 放 '(' -> dfs(2,1)
+│           │
+│           └─ 放 ')' -> dfs(2,2) -> add "(())"
+└─ 放 ')' -> 不成立（right=0 < left=0 不成立）
+
+注意：为什么直接用 path[left + right] = ... 就行？
+因为每个组合长度固定为 2n
+left + right 正好表示当前填到的位置索引
+不需要 append / pop → 回溯用覆盖方式即可
+
+过程：
+left 控制 '(' 的数量 ≤ n
+right 控制 ')' 的数量 ≤ left（保证合法）
+path[left + right] 表示当前填到的位置
+每一步 DFS 尝试 '(' 或 ')'，合法则递归
+到 right == n 时 → 完整组合生成
+
+
+代码为：
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        ans = []
+        path = [''] * (n * 2)  # 所有括号长度都是 2n
+
+        # 目前填了 left 个左括号，right 个右括号
+        def dfs(left: int, right: int) -> None:
+            if right == n:  # 填完 2n 个括号
+                ans.append(''.join(path))
+                return
+            if left < n:  # 可以填左括号
+                path[left + right] = '('  # 直接覆盖
+                dfs(left + 1, right)
+            if right < left:  # 可以填右括号
+                path[left + right] = ')'  # 直接覆盖
+                dfs(left, right + 1)
+
+        dfs(0, 0)  # 一开始没有填括号
+        return ans
+
+
+
+        
