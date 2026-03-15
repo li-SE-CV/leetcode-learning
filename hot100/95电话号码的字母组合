@@ -1,0 +1,37 @@
+核心思想：DFS / 回溯 + 多叉树枚举（每个数字选择一个字母）
+本质上：
+digits = "23"
+
+           ""
+      /      |      \
+     a       b       c
+   / | \   / | \   / | \
+  ad ae af bd be bf cd ce cf
+
+注意：为什么这里不用 pop？----path[i] = c 此代码是覆盖赋值
+
+代码为：
+MAPPING = "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        n = len(digits)
+        if n == 0:
+            return []
+  
+        ans = []
+        path = [''] * n  # 注意 path 长度一开始就是 n，不是空列表
+
+        def dfs(i: int) -> None:
+            if i == n:
+                ans.append(''.join(path))#创建一个新的字符串对象，把 list 拼接成字符串
+                return
+            for c in MAPPING[int(digits[i])]:
+                path[i] = c  # 直接覆盖
+                dfs(i + 1)
+
+        dfs(0)
+        return ans
+
+
+        
