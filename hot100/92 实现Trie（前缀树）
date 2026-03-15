@@ -1,0 +1,71 @@
+啥意思没看懂啊，在这里先安利一下稞的404，越听越有劲
+前缀树的核心思想：把字符串按字符拆开，一层一层存到树里（每一层代表一个字符，从root到叶子组成一个单词）
+例如存三个单词：cat，car，dog
+Trie 结构：
+        root
+       /   \
+      c     d
+      |     |
+      a     o
+     / \     |
+    t   r     g
+路径：
+root → c → a → t  = cat
+root → c → a → r  = car
+root → d → o → g  = dog
+
+#search例如：
+Trie 有
+cat
+查询：
+查询	        结果
+search("cat")	True
+search("ca")	False
+
+
+#startsWith例如：Trie 有
+cat
+car
+查询：
+查询	            结果
+startsWith("ca")	True
+startsWith("cat")	True
+startsWith("do")	False
+
+
+代码为：
+class Node:
+    __slots__ = 'son', 'end'
+
+    def __init__(self):
+        self.son = {}
+        self.end = False
+
+class Trie:
+    def __init__(self):
+        self.root = Node()
+
+    def insert(self, word: str) -> None:
+        cur = self.root
+        for c in word:  #遍历单词字符
+            if c not in cur.son:  # 无路可走？
+                cur.son[c] = Node()  # 那就造路！
+            cur = cur.son[c] #往下走
+        cur.end = True #标记单词结束
+
+    def find(self, word: str) -> int:
+        cur = self.root
+        for c in word:
+            if c not in cur.son:  # 道不同，不相为谋
+                return 0
+            cur = cur.son[c]
+        # 走过同样的路（2=完全匹配，1=前缀匹配）
+        return 2 if cur.end else 1
+    
+    def search(self, word: str) -> bool:
+        return self.find(word) == 2
+
+    def startsWith(self, prefix: str) -> bool:
+        return self.find(prefix) != 0
+
+        
