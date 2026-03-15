@@ -2,4 +2,50 @@
 我记得好像就hot100就几个是用BFS做的
 
 核心思想：BFS 按层扩散（多源 BFS）
+流程：
+1.扫描整个 grid
+2.记录所有腐烂橘子的位置（BFS起点）
+3.统计新鲜橘子数量
+4.每一分钟腐烂一层橘子
+5.直到没有新鲜橘子
+
+
+m,n → 网格大小
+fresh → 新鲜橘子数量
+q → 队列（存腐烂橘子位置）
+
+
+代码为：
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        fresh = 0
+        q = []
+        for i, row in enumerate(grid):
+            for j, x in enumerate(row):
+                if x == 1:
+                    fresh += 1  # 统计新鲜橘子个数
+                elif x == 2:
+                    q.append((i, j))  # 一开始就腐烂的橘子
+
+        ans = 0
+
+        #BFS扩散
+        while q and fresh:
+            ans += 1  # 经过一分钟
+      
+#tmp = 当前所有腐烂橘子        q = 下一分钟的新腐烂橘子
+            tmp = q
+            q = []
+            for x, y in tmp:  # 已经腐烂的橘子
+                for i, j in (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1):  # 四方向
+                    if 0 <= i < m and 0 <= j < n and grid[i][j] == 1:  # 在图内且新鲜橘子
+                        fresh -= 1
+                        grid[i][j] = 2  # 变成腐烂橘子
+                        q.append((i, j))
+
+        return -1 if fresh else ans
+
+
+
 
