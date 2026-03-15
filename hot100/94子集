@@ -1,0 +1,50 @@
+啥时候能全部做完所有算法题啊，今晚可以吗一定行的
+
+核心思想：每个元素都有两种选择：选 or 不选（和前面的全排列异曲同工）
+举例：
+nums=[1,2]
+                 []
+             /         \
+        不选1          选1
+        []            [1]
+       /  \          /   \
+   不选2  选2     不选2  选2
+    []    [2]      [1]  [1,2]
+
+#################################
+path.append(nums[i])
+dfs(i + 1)
+path.pop()
+尝试把 nums[i] 加入当前子集
+看看后面会生成哪些子集
+然后撤销这个选择
+继续探索其他情况
+#################################
+
+
+代码为：
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        n = len(nums)
+        ans = []
+        path = []
+
+        # 选或不选：讨论 nums[i] 是否加入 path
+        def dfs(i: int) -> None:
+            if i == n:  # 子集构造完毕
+                ans.append(path.copy())  # 复制 path，也可以写 path[:]
+                return
+
+            # 不选 nums[i]
+            dfs(i + 1)  # 考虑下一个数 nums[i+1] 选或不选
+
+            # 选 nums[i]
+            path.append(nums[i])
+            dfs(i + 1)  # 考虑下一个数 nums[i+1] 选或不选
+            path.pop()  # 恢复现场，撤销 path.append(nums[i])
+
+        dfs(0)
+        return ans
+
+
+        
