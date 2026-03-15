@@ -1,0 +1,36 @@
+终于最后一道题了，经典课本题目，难度挺大的
+
+核心逻辑总结
+1、DFS + 回溯：
+一行一行放置皇后，当前行可放列和对角线没有被占用的列
+放置后递归下一行，回溯时撤销标记，尝试其他列
+
+2、路径记录：
+queens[r] 保存每行皇后列号
+col / diag1 / diag2 维护列和对角线是否被占用
+
+3、终止条件：
+成功放置 n 个皇后 → 构造棋盘并加入结果
+
+代码为：
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        ans = []
+        queens = [0] * n  # 皇后放在 (r,queens[r])
+        col = [False] * n  ##表示第 c 列是否被皇后占用
+        diag1 = [False] * (n * 2 - 1) ##表示 / 方向（右上-左下）对角线是否被占用
+        diag2 = [False] * (n * 2 - 1) ##表示 \ 方向（左上-右下）对角线是否被占用
+        def dfs(r: int) -> None:
+            if r == n:
+                ans.append(['.' * c + 'Q' + '.' * (n - 1 - c) for c in queens])
+                return
+            # 在 (r,c) 放皇后
+            for c, ok in enumerate(col):
+                if not ok and not diag1[r + c] and not diag2[r - c]:  # 判断能否放皇后
+                    queens[r] = c  # 直接覆盖，无需恢复现场
+                    col[c] = diag1[r + c] = diag2[r - c] = True  # 皇后占用了 c 列和两条斜线
+                    dfs(r + 1)
+                    col[c] = diag1[r + c] = diag2[r - c] = False  # 恢复现场
+        dfs(0)
+        return ans 
+
