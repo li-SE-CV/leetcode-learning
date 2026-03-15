@@ -1,0 +1,72 @@
+啥时候写完啊。。。。
+感觉这道题和动态规划一道题非常相似
+
+核心思想：DFS / 回溯 + 选或不选+剪枝优化（排序）
+1、不选当前元素 → 递归下一个元素
+2、选当前元素 → 递归自己（允许重复使用）
+3、回溯 → path.pop() 恢复现场
+
+案例：
+candidates = [2,3]
+target = 5
+i=0, left=5, path=[]
+│
+├─ 不选 2 -> dfs(i=1, left=5, path=[])
+│   │
+│   ├─ 不选 3 -> dfs(i=2, left=5, path=[]) -> 返回
+│   └─ 选 3 -> dfs(i=1, left=2, path=[3])
+│       │
+│       ├─ 不选 3 -> dfs(i=2, left=2, path=[3]) -> 返回
+│       └─ 选 3 -> dfs(i=1, left=-1, path=[3,3]) -> 返回
+│
+└─ 选 2 -> dfs(i=0, left=3, path=[2])
+    │
+    ├─ 不选 2 -> dfs(i=1, left=3, path=[2])
+    │   │
+    │   ├─ 不选 3 -> dfs(i=2, left=3, path=[2]) -> 返回
+    │   └─ 选 3 -> dfs(i=1, left=0, path=[2,3]) -> 找到合法组合 [2,3]
+    │
+    └─ 选 2 -> dfs(i=0, left=1, path=[2,2])
+        │
+        ├─ 不选 2 -> dfs(i=1, left=1, path=[2,2])
+        │   │
+        │   ├─ 不选 3 -> dfs(i=2, left=1, path=[2,2]) -> 返回
+        │   └─ 选 3 -> dfs(i=1, left=-2, path=[2,2,3]) -> 返回
+        │
+        └─ 选 2 -> dfs(i=0, left=-1, path=[2,2,2]) -> 返回
+
+
+代码为：
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        #把 candidates 从小到大排序，如果递归中发现 left<candidates[i]，
+        由于后面的数字只会更大，所以无法把 left 减小到 0，可以直接返回
+        ans = []
+        path = []
+
+        def dfs(i: int, left: int) -> None:
+            if left == 0:
+                # 找到一个合法组合
+                ans.append(path.copy())
+                return
+
+            if i == len(candidates) or left < candidates[i]:
+                return
+
+            # 不选
+            dfs(i + 1, left)
+
+            # 选
+            path.append(candidates[i])
+            dfs(i, left - candidates[i])
+            path.pop()  # 恢复现场
+
+        dfs(0, target)
+        return ans
+
+
+
+        
+
+
