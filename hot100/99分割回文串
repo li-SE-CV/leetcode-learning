@@ -1,0 +1,40 @@
+核心逻辑总结：
+从字符串开头开始 DFS，枚举每个可能的切割子串，
+只选择回文子串递归，回溯尝试所有可能路径，直到遍历完整个字符串，收集所有合法分割方案
+
+1、DFS + 回溯：
+递归遍历每个可能的切割点，只选择回文子串
+回溯撤销上一步选择，尝试其他可能的分割
+
+2、路径记录：
+path 临时存储当前分割状态
+DFS 完成或回溯时通过 path.copy() 保存方案
+
+3、终止条件：
+遍历到字符串末尾，说明生成一个完整方案
+
+代码为：
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        n = len(s)
+        ans = []
+        path = []
+
+        # 考虑 s[i:] 怎么分割
+        def dfs(i: int) -> None:
+            if i == n:  # s 分割完毕
+                ans.append(path.copy())  # 复制 path
+                return
+            for j in range(i, n):  # 枚举子串的结束位置
+                t = s[i: j + 1]  # 分割出子串 t
+                if t == t[::-1]:  # 判断 t 是不是回文串
+                    path.append(t)
+                    # 考虑剩余的 s[j+1:] 怎么分割
+                    dfs(j + 1)
+                    path.pop()  # 恢复现场
+
+        dfs(0)
+        return ans
+
+
+        
