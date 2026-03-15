@@ -1,0 +1,45 @@
+加油还有两道题
+
+核心思路：
+通过深度优先搜索（DFS）和回溯，在二维网格中尝试每个可能的起点，按单词顺序寻找连续路径，
+如果找到整条路径就返回 True，否则返回 False
+
+1、剪枝优化
+统计板子和单词的字母频次，快速排除不可能的情况。
+可以根据首尾字母出现次数决定是否反转单词，减少 DFS 搜索量。
+2、DFS 搜索
+从起点匹配单词第一个字母开始。
+每步向上下左右四个方向递归搜索下一个字母。
+已访问的格子临时标记，防止重复访问。
+3、回溯
+如果某条路径无法完成单词匹配，撤销标记，尝试其他路径。
+4、终止条件
+当前格子不匹配 → 直接返回 False。
+匹配到单词最后一个字母 → 返回 True，搜索成功
+
+代码为：
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        cnt = Counter(c for row in board for c in row)
+        if not cnt >= Counter(word):  # 优化一
+            return False
+        if cnt[word[-1]] < cnt[word[0]]:  # 优化二
+            word = word[::-1]
+
+        m, n = len(board), len(board[0])
+        def dfs(i: int, j: int, k: int) -> bool:
+            if board[i][j] != word[k]:  # 匹配失败
+                return False
+            if k == len(word) - 1:  # 匹配成功！
+                return True
+            board[i][j] = ''  # 标记访问过
+            for x, y in (i, j - 1), (i, j + 1), (i - 1, j), (i + 1, j):  # 相邻格子
+                if 0 <= x < m and 0 <= y < n and dfs(x, y, k + 1):
+                    return True  # 搜到了！
+            board[i][j] = word[k]  # 恢复现场
+            return False  # 没搜到
+        return any(dfs(i, j, 0) for i in range(m) for j in range(n))
+
+
+
+        
