@@ -22,7 +22,7 @@ class Solution:
 >排序结果当 key，异位词自然合
 class Solution:
     def groupAnagrams(self, strs):
-        mp = collections.defaultdict(list)
+        mp = collections.defaultdict(list)#创建一个字典，如果 key 不存在，就默认创建一个 空列表 []
 
         for st in strs:
             key = "".join(sorted(st))#确实比上面的代码要简单的多
