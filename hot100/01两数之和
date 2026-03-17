@@ -6,7 +6,7 @@ class Solution:
         seen = {}  # 数字 -> 下标
 
         # 遍历数组
-        for i, num in enumerate(nums):
+        for i, num in enumerate(nums):##记住这个是枚举
             # 计算还差多少才能凑成目标
             need = target - num
 
