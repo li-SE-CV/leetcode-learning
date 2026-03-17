@@ -11,7 +11,7 @@ class Solution(object):
         n = len(nums)
         left = right = 0
         while right < n:
-            if nums[right] != 0:
+            if nums[right] != 0:##注意这个点，一般来说大家都会注意=0，但是这个前提是！=0
                 nums[left], nums[right] = nums[right], nums[left]#非零位置互换
                 left += 1
             right += 1
