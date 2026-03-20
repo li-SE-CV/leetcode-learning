@@ -3,7 +3,7 @@
 
 class Solution:
     def subarraySum(self, nums, k):
-        cnt = defaultdict(int)
+        cnt = defaultdict(int)##表示创建一个增强版字典，访问不存在的键时自动赋值为 0
         ans = s = 0
         #直接拿数值
         for x in nums:
